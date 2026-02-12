@@ -1,0 +1,69 @@
+```
+❯ nmap -sS -p- 10.102.59.0/24
+Starting Nmap 7.95 ( https://nmap.org ) at 2026-02-12 02:59 EST
+Nmap scan report for 10.102.59.2
+Host is up (0.00078s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+23/tcp open  telnet
+MAC Address: 08:F3:FB:A8:34:0A (Cisco Systems)
+
+Nmap scan report for 10.102.59.12
+Host is up (0.0013s latency).
+All 65535 scanned ports on 10.102.59.12 are in ignored states.
+Not shown: 65486 filtered tcp ports (no-response), 49 closed tcp ports (reset)
+MAC Address: 3C:64:CF:8B:7C:6D (Unknown)
+
+Nmap scan report for 10.102.59.59
+Host is up (0.00064s latency).
+Not shown: 65534 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+7680/tcp open  pando-pub
+MAC Address: 04:BF:1B:90:6E:A8 (Dell)
+
+Nmap scan report for 10.102.59.64
+Host is up (0.0000030s latency).
+All 65535 scanned ports on 10.102.59.64 are in ignored states.
+Not shown: 65535 closed tcp ports (reset)
+
+Nmap done: 256 IP addresses (4 hosts up) scanned in 158.80 seconds
+```
+
+The scan found 4 hosts.
+- 10.102.59.2 has 2 open ports, SSH (22) and TELNET (23)
+- 10.102.59.12 has all ports in ignored states. Most likely, there is a firewall set up on the ports.
+- 10.102.59.59 has one port is open, 7680, running Pando-Pub
+- 10.102.59.64 also hash all ports in ignored states.
+
+Now that I have information on the open ports, I can perform service-based enumeration (using flags like -A, -sV, -sO) to get the version of the services running.
+
+Questions
+
+1. What is an open port?
+An open port is a network port that is actively accepting connections and running a service (e.g., HTTP on port 80, SSH on port 22).
+
+2. How does Nmap perform a TCP SYN scan?
+Nmap sends a SYN packet to the target port.
+  If it receives a SYN-ACK, the port is open.
+  If it receives an RST, the port is closed.
+It does not complete the handshake (half-open scan), making it stealthier.
+
+3. What risks are associated with open ports?
+Open ports expose services that may have vulnerabilities, allowing attackers to exploit, gain access, or launch attacks.
+
+4. Explain the difference between TCP and UDP scanning.
+TCP scanning checks ports using the TCP handshake and is more reliable.
+UDP scanning sends UDP packets and waits for responses; it’s slower and less reliable because UDP is a connectionless protocol.
+
+5. How can open ports be secured?
+Closing unused ports, using firewalls, implementing strong authentication, keeping services up to date, and using intrusion detection systems.
+
+6. What is a firewall's role regarding ports?
+A firewall filters incoming and outgoing traffic, allowing or blocking traffic based on port numbers and rules.
+
+7. What is a port scan, and why do attackers perform it?
+A port scan is a technique to identify open ports and services on a system. Attackers use it to find entry points for exploitation.
+
+8. How does Wireshark complement port scanning?
+Wireshark captures and analyses network traffic, helping verify scan results and detect suspicious scanning activity.
